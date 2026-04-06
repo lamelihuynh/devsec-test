@@ -209,11 +209,14 @@ pipeline {
             echo " ==== Pushing image to AWS ECR ===="
             sh """
               set -e 
+              export AWS_ACCESS_KEY_ID=\$AWS_ACCESS_KEY_ID
+              export AWS_SECRET_ACCESS_KEY=\$AWS_SECRET_ACCESS_KEY
+
               aws ecr get-login-password --region ${env.AWS_REGION} | \
-              docker login --username --password-stdin ${env.REGISTRY}
+              docker login --username AWS --password-stdin ${env.REGISTRY}
 
               docker push ${env.IMAGE_NAME}:${env.IMAGE_TAG}
-              docker pus ${env.IMAGE_NAME}:latest
+              docker push ${env.IMAGE_NAME}:latest
 
               echo "\033[32m[Success] - Pushed to : ${env.IMAGE_NAME}:${env.IMAGE_TAG}"
               echo "\033[32m Also tagged as : ${env.IMAGE_NAME}:latest"
