@@ -232,30 +232,52 @@ pipeline {
       steps{
         script{
           echo """
-          ╔════════════════════════════════════════════════════════════╗
-          ║           DevSecOps Pipeline Summary                       ║
-          ╠════════════════════════════════════════════════════════════╣
-          ║ Build Number     : ${env.BUILD_NUMBER}                         ║
-          ║ Git Commit       : ${env.GIT_COMMIT_SHORT}                     ║
-          ║ Image URI        : ${env.IMAGE_URI}                            ║
-          ║ Registry         : ${env.REGISTRY}                             ║
-          ║ ECR Repo         : ${env.ECR_REPO}                             ║
-          ║ Report Directory : ${env.SCAN_REPORT_DIR}                      ║
-          ╠════════════════════════════════════════════════════════════╣
-          ║ Stages Completed:                                          ║
-          ║   ✓ Source checkout                                        ║
-          ║   ✓ Secrets scan                                           ║
-          ║   ✓ SCA (Dependencies)                                     ║
-          ║   ✓ SAST (Code analysis)                                   ║
-          ║   ✓ Docker build                                           ║
-          ║   ✓ Container scan                                         ║
-          ║   ✓ IaC scan                                               ║
-          ║   ✓ ECR push                                               ║  
-          ╚════════════════════════════════════════════════════════════╝
+          ╔══════════════════════════════════════════════════════════════════════════════════════╗
+          ║           DevSecOps Pipeline Summary                                                 ║
+          ╠══════════════════════════════════════════════════════════════════════════════════════╣
+          ║ Build Number     : ${env.BUILD_NUMBER}                                               ║
+          ║ Git Commit       : ${env.GIT_COMMIT_SHORT}                                           ║
+          ║ Image URI        : ${env.IMAGE_URI}                                                  ║
+          ║ Registry         : ${env.REGISTRY}                                                   ║
+          ║ ECR Repo         : ${env.ECR_REPO}                                                   ║
+          ║ Report Directory : ${env.SCAN_REPORT_DIR}                                            ║
+          ╠══════════════════════════════════════════════════════════════════════════════════════╣
+          ║ Stages Completed:                                                                    ║
+          ║   ✓ Source checkout                                                                  ║
+          ║   ✓ Secrets scan                                                                     ║
+          ║   ✓ SCA (Dependencies)                                                               ║
+          ║   ✓ SAST (Code analysis)                                                             ║
+          ║   ✓ Docker build                                                                     ║
+          ║   ✓ Container scan                                                                   ║
+          ║   ✓ IaC scan                                                                         ║
+          ║   ✓ ECR push                                                                         ║  
+          ╚══════════════════════════════════════════════════════════════════════════════════════╝
           """
           sh 'ls -lah ${SCAN_REPORT_DIR}/ || echo "No scan reports generated"'
 
         }
+      }
+    }
+  }
+
+  stage('11. Deploy Staging (GitOps)'){
+    when {
+      branch 'main'
+    }
+    steps{
+      script{
+        echo '==== Deploying to staging via ArgoCD ===='
+        sh '''
+        set +e
+        if command -v kubectl &> /dev/null && command -v kustomize &> /dev/null; then
+        
+        export KUBECONFIG = ${KUBECONFIG_PATH}
+        cd kubernetes/overlays/staging
+
+        set -e
+        
+        '''
+
       }
     }
   }
