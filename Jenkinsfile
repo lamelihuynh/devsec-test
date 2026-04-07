@@ -274,6 +274,7 @@ pipeline {
         export KUBECONFIG = ${KUBECONFIG_PATH}
         cd kubernetes/overlays/staging
 
+        fi
         set -e
         
         '''
