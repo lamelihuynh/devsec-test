@@ -271,7 +271,7 @@ pipeline {
         set +e
         if command -v kubectl &> /dev/null && command -v kustomize &> /dev/null; then
         
-        export KUBECONFIG = ${KUBECONFIG_PATH}
+        # export KUBECONFIG = ${KUBECONFIG_PATH}
         cd kubernetes/overlays/staging
 
         kustomize edit set image tetris-devsecops=${IMAGE_URI}
