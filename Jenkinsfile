@@ -258,7 +258,7 @@ pipeline {
         }
       }
     }
-  }
+  
 
   stage('11. Deploy Staging (GitOps)'){
     when {
@@ -281,7 +281,7 @@ pipeline {
       }
     }
   }
-}
+
 
 
 
