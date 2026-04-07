@@ -262,7 +262,7 @@ pipeline {
 
   stage('11. Deploy Staging (GitOps)'){
     when {
-      branch 'main'
+      expression {env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main'}
     }
     steps{
       script{
