@@ -49,7 +49,7 @@ pipeline {
             $class: 'GitSCM', 
             branches: [[name: "*/main"]], 
             userRemoteConfigs: [[
-              url: 'https://github.com/lamelihuynh/devsec-test',
+              url: 'https://github.com/lamelihuynh/linh-test',
             ]]
           ])
           
@@ -82,7 +82,7 @@ pipeline {
 
     stage('3. Secrets Scan'){
       when {
-        expression { fileExists('app/src')}
+        expression { fileExists('app/src')} 
       }
       steps {
         script{
@@ -96,7 +96,7 @@ pipeline {
                 chmod +x gitleaks
                 export PATH=$PATH:$(pwd)
               fi
-              ./gitleaks detect --source . --report-path ${SCAN_REPORT_DIR}/gitleaks-report.json --report-format json
+              ./gitleaks protect detect --source . --report-path ${SCAN_REPORT_DIR}/gitleaks-report.json --report-format json
 
             ''',
             returnStatus: true
